@@ -14,19 +14,12 @@ public class MenuScreen extends BaseScreen {
     private Texture img;
 
     private Vector2 touch;
+    private Vector2 v0;
     private Vector2 v;
     private Vector2 v2;
     private Vector2 v3;
     private Vector2 pos;
-    private float topBorder;
-    private float rightBorder;
-    private float bottomBorder;
-    private float leftBorder;
-    private int a;
-    private int b;
-    private int c;
-    private int d;
-    private float h;
+    private Vector2 pos2;
 
     @Override
     public void show() {
@@ -34,10 +27,12 @@ public class MenuScreen extends BaseScreen {
         batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
         touch = new Vector2();
-        v = new Vector2(0,0); //0.8f,0.8f
+        v0 = new Vector2();
+        v = new Vector2(0,0);
         v2 = new Vector2();
         v3 = new Vector2(0, 0);
         pos = new Vector2();
+        pos2 = new Vector2();
     }
 
     @Override
@@ -48,30 +43,15 @@ public class MenuScreen extends BaseScreen {
         batch.begin();
         batch.draw(img, pos.x, pos.y);
         batch.end();
-        topBorder = pos.x + img.getWidth();
-        rightBorder = pos.y + img.getHeight();
         if (!touch.isZero()) {
-            if (pos.x <= touch.x && pos.y <= touch.y ) {
-                System.out.println("pos1 OK " + v3.len());
+            v0.add(v3);
+            if (v0.len() < pos2.len()) {
                 pos.add(v3);
            }
             else {
-                System.out.println(" 1start = stop" );
+                touch.setZero();
             }
-
-            if (pos.x >= touch.x && pos.y >= touch.y) {
-                System.out.println("pos2 OK " + v3.len());
-                pos.add(v3);
-            }
-            else {
-                System.out.println(" 2start = stop" );
-            }
-
-            System.out.println("pos=touch " + pos.len());
-
-
         }
-
     }
 
     @Override
@@ -85,25 +65,15 @@ public class MenuScreen extends BaseScreen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
         touch.set(screenX, Gdx.graphics.getHeight() - screenY);
+        v0.set(0,0);
+        pos2.set(0,0);
         v.set(pos.x, pos.y);
         System.out.println("pos.x= " + pos.x + "pos.y= " + pos.y);
-        System.out.println("v = " + v);
         v2.set(touch.x, touch.y);
-        System.out.println("v2 = " + v2);
-            v3 = v2.sub(v);
-        System.out.println("v3 = " + v3);
-        System.out.println("v3_len= " + v3.len());
+        v3 = v2.sub(v);
+        pos2.add(v3);
         v.nor();
         v2.nor();
-        System.out.println("v_dot = " + v.dot(v2));
-
-
-
-       // v3.nor();
-        System.out.println("v3_nor = " + v3);
-        System.out.println("touch.x = " + touch.x + " touch.y = " + touch.y);
-
-
         return false;
     }
 
