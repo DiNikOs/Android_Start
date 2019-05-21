@@ -22,7 +22,10 @@ public class MenuScreen extends BaseScreen {
     private float rightBorder;
     private float bottomBorder;
     private float leftBorder;
-    private float w;
+    private int a;
+    private int b;
+    private int c;
+    private int d;
     private float h;
 
     @Override
@@ -48,10 +51,25 @@ public class MenuScreen extends BaseScreen {
         topBorder = pos.x + img.getWidth();
         rightBorder = pos.y + img.getHeight();
         if (!touch.isZero()) {
-            if (pos.x != touch.x && pos.y != touch.y) {
+            if (pos.x <= touch.x && pos.y <= touch.y ) {
+                System.out.println("pos1 OK " + v3.len());
                 pos.add(v3);
            }
-            else pos.add(pos.x,pos.y);
+            else {
+                System.out.println(" 1start = stop" );
+            }
+
+            if (pos.x >= touch.x && pos.y >= touch.y) {
+                System.out.println("pos2 OK " + v3.len());
+                pos.add(v3);
+            }
+            else {
+                System.out.println(" 2start = stop" );
+            }
+
+            System.out.println("pos=touch " + pos.len());
+
+
         }
 
     }
@@ -73,12 +91,15 @@ public class MenuScreen extends BaseScreen {
         v2.set(touch.x, touch.y);
         System.out.println("v2 = " + v2);
             v3 = v2.sub(v);
+        System.out.println("v3 = " + v3);
+        System.out.println("v3_len= " + v3.len());
         v.nor();
         v2.nor();
         System.out.println("v_dot = " + v.dot(v2));
 
-        System.out.println("v3 = " + v3);
-        v3.nor();
+
+
+       // v3.nor();
         System.out.println("v3_nor = " + v3);
         System.out.println("touch.x = " + touch.x + " touch.y = " + touch.y);
 
