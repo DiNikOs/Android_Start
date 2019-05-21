@@ -54,6 +54,7 @@ public class MenuScreen extends BaseScreen {
         }
     }
 
+
     @Override
     public void dispose() {
         batch.dispose();
