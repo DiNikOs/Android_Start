@@ -74,6 +74,7 @@ public class MenuScreen extends BaseScreen {
         super.dispose();
     }
 
+
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
@@ -81,10 +82,8 @@ public class MenuScreen extends BaseScreen {
         badLogic.resize(worldBounds);
     }
 
-
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         return super.touchDown(touch, pointer);
     }
-
 }
