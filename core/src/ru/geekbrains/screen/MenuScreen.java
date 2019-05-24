@@ -15,15 +15,12 @@ import ru.geekbrains.sprite.BadLogic;
 
 public class MenuScreen extends BaseScreen {
 
-    //private SpriteBatch batch;
-   // private Texture img;
-
     private Texture bg;
     private Texture badLogicTexture;
     private Background background;
     private BadLogic badLogic;
 
-    protected static float LEN = 0.05f;
+
 
     private Vector2 touch;
     private Vector2 v0;
@@ -40,30 +37,26 @@ public class MenuScreen extends BaseScreen {
         badLogic = new BadLogic(new TextureRegion(badLogicTexture));
 
         touch = new Vector2();
-        v0 = new Vector2();
-        v = new Vector2();
-        v1 = new Vector2();
-        pos = new Vector2();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        update(delta);
+        draw();
+    }
+
+    public void update (float delta) {
+        badLogic.update(delta);
+    }
+
+    public void draw () {
         Gdx.gl.glClearColor(0.4f, 0.3f, 0.9f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         background.draw(batch);
         badLogic.draw(batch);
         batch.end();
-
-        v0.set(v1);
-        if (v0.sub(pos).len() <= LEN) {
-            pos.set(v1);
-        } else {
-            pos.add(v);
-        }
-        badLogic.updater(pos);
     }
 
     @Override
@@ -83,9 +76,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         super.touchDown(touch, pointer);
-        v1.set(touch);
-        System.out.println("pos= " + pos);
-        v.set(touch.cpy().sub(pos)).setLength(LEN);
+        badLogic.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 }

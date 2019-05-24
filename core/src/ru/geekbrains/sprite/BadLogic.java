@@ -10,13 +10,28 @@ import ru.geekbrains.math.Rect;
 
 public class BadLogic extends Sprite {
 
-    private Vector2 pos;
-
+    protected static float LEN = 0.05f;
+    private Vector2 touch;
+    private Vector2 v0;
+    private Vector2 v;
 
     public BadLogic(TextureRegion region) {
         super(region);
         regions[frame].getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        pos = new Vector2();
+        touch = new Vector2();
+        v0 = new Vector2();
+        v = new Vector2();
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        v0.set(touch);
+        if (v0.sub(pos).len() <= LEN) {
+            pos.set(touch);
+        } else {
+            pos.add(v);
+        }
     }
 
     @Override
@@ -24,21 +39,11 @@ public class BadLogic extends Sprite {
         setHeightProportion(0.2f);
     }
 
-    public void updater (Vector2 pos) {
-        this.pos = pos;
-
-    }
-
-
     @Override
-    public void draw(SpriteBatch batch) {
-        batch.draw(
-                regions[frame],
-                getLeft() + pos.x, getBottom() + pos.y,
-                halfWidth, halfHeight,
-                getWidth(), getHeight(),
-                scale, scale,
-                angle
-        );
+    public boolean touchDown(Vector2 touch, int pointer) {
+        super.touchDown(touch, pointer);
+        this.touch = touch;
+        v.set(touch.cpy().sub(pos).setLength(LEN));
+        return false;
     }
 }
