@@ -3,6 +3,7 @@ package ru.geekbrains.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,15 +15,15 @@ import ru.geekbrains.sprite.BadLogic;
 
 public class MenuScreen extends BaseScreen {
 
-//    private SpriteBatch batch;
-//    private Texture img;
+    //private SpriteBatch batch;
+   // private Texture img;
 
     private Texture bg;
     private Texture badLogicTexture;
     private Background background;
     private BadLogic badLogic;
 
-    private static float LEN = 2f;
+    protected static float LEN = 0.5f;
 
 
     private Vector2 touch;
@@ -33,8 +34,6 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-//        batch = new SpriteBatch();
-//        img = new Texture("badlogic.jpg");
         bg = new Texture("bg.jpg");
         background = new Background(new TextureRegion(bg));
         badLogicTexture = new Texture("badlogic.jpg");
@@ -51,24 +50,23 @@ public class MenuScreen extends BaseScreen {
         super.render(delta);
         Gdx.gl.glClearColor(0.4f, 0.3f, 0.9f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
-        //batch.draw(img, pos.x, pos.y);
         background.draw(batch);
         badLogic.draw(batch);
         batch.end();
-        v0.set(touch);
-        if (v0.sub(pos).len() <= LEN) {
-            pos.set(touch);
-        }
-        else {
-            pos.add(v);
-        }
+
+//        v0.set(touch);
+//        if (v0.sub(pos).len() <= LEN) {
+//            pos.set(touch);
+//        } else {
+//            pos.add(v);
+//        }
+        //badLogic.updater(pos);
     }
 
     @Override
     public void dispose() {
-        //batch.dispose();
-        //img.dispose();
         bg.dispose();
         badLogicTexture.dispose();
         super.dispose();
@@ -84,6 +82,12 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
+        super.touchDown(touch, pointer);
+        touch.set(touch);
+        System.out.println("pos= " + pos);
+        v.set(touch.cpy().sub(pos)).setLength(LEN);
+        System.out.println("pos.x= " +pos.x + "pos.y= " + pos.y);
+        badLogic.updater(touch);
         return super.touchDown(touch, pointer);
     }
 }

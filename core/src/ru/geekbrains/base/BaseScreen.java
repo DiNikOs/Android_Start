@@ -3,6 +3,7 @@ package ru.geekbrains.base;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
@@ -10,10 +11,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.math.MatrixUtils;
 import ru.geekbrains.math.Rect;
+import ru.geekbrains.sprite.BadLogic;
 
 public abstract class BaseScreen implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
+    private static float LEN = 2f;
 
     private Vector2 touch;
 
@@ -48,7 +51,6 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         screenBounds.setSize(width, height);
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
-
         float aspect = width / (float) height;
         worldBounds.setHeight(1f);
         worldBounds.setWidth(1f * aspect);
@@ -125,6 +127,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     public boolean touchUp(Vector2 touch, int pointer) {
         System.out.println("touchUp touchX = " + touch.x + " touchY = " + touch.y);
+
         return false;
     }
 
