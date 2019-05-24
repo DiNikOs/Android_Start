@@ -23,11 +23,12 @@ public class MenuScreen extends BaseScreen {
     private Background background;
     private BadLogic badLogic;
 
-    protected static float LEN = 0.5f;
+    protected static float LEN = 0.05f;
 
     private Vector2 touch;
     private Vector2 v0;
     private Vector2 v;
+    private Vector2 v1;
     private Vector2 pos;
 
     @Override
@@ -41,6 +42,7 @@ public class MenuScreen extends BaseScreen {
         touch = new Vector2();
         v0 = new Vector2();
         v = new Vector2();
+        v1 = new Vector2();
         pos = new Vector2();
     }
 
@@ -55,13 +57,13 @@ public class MenuScreen extends BaseScreen {
         badLogic.draw(batch);
         batch.end();
 
-//        v0.set(touch);
-//        if (v0.sub(pos).len() <= LEN) {
-//            pos.set(touch);
-//        } else {
-//            pos.add(v);
-//        }
-        //badLogic.updater(pos);
+        v0.set(v1);
+        if (v0.sub(pos).len() <= LEN) {
+            pos.set(v1);
+        } else {
+            pos.add(v);
+        }
+        badLogic.updater(pos);
     }
 
     @Override
@@ -82,10 +84,10 @@ public class MenuScreen extends BaseScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         super.touchDown(touch, pointer);
         touch.set(touch);
+        v1.set(touch);
         System.out.println("pos= " + pos);
         v.set(touch.cpy().sub(pos)).setLength(LEN);
         System.out.println("pos.x= " +pos.x + "pos.y= " + pos.y);
-        badLogic.updater(touch);
         return super.touchDown(touch, pointer);
     }
 }
