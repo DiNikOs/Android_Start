@@ -54,6 +54,7 @@ public class MenuScreen extends BaseScreen {
         background.draw(batch);
         badLogic.draw(batch);
         batch.end();
+
 //        v0.set(touch);
 //        if (v0.sub(pos).len() <= LEN) {
 //            pos.set(touch);
