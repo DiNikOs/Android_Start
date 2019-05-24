@@ -72,7 +72,6 @@ public class MenuScreen extends BaseScreen {
         super.dispose();
     }
 
-
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
