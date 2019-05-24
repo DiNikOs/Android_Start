@@ -25,7 +25,6 @@ public class MenuScreen extends BaseScreen {
 
     protected static float LEN = 0.5f;
 
-
     private Vector2 touch;
     private Vector2 v0;
     private Vector2 v;
