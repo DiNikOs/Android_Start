@@ -62,5 +62,4 @@ public class MenuScreen extends BaseScreen {
         System.out.println("pos.x= " + pos.x + "pos.y= " + pos.y);
         return false;
     }
-
 }
