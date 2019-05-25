@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
+import ru.geekbrains.base.SpaceShipS;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.BadLogic;
+import ru.geekbrains.sprite.ShipMain;
 import ru.geekbrains.sprite.Star;
 
 public class GameScreen extends BaseScreen {
@@ -18,9 +20,8 @@ public class GameScreen extends BaseScreen {
     private static final int STAR_COUNT = 64;
 
     private Texture bg;
-    private Texture bl;
-    private BadLogic badLogic;
     private Background background;
+    private ShipMain shipMain;
     private TextureAtlas atlas;
     private Star[] starArray;
 
@@ -28,11 +29,10 @@ public class GameScreen extends BaseScreen {
     public void show() {
         super.show();
         bg = new Texture("textures/bg.jpg");
-        bl = new Texture("textures/badlogic.jpg");
         background = new Background(new TextureRegion(bg));
-        badLogic = new BadLogic(new TextureRegion(bl));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
         starArray = new Star[STAR_COUNT];
+        shipMain = new ShipMain(atlas);
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
@@ -48,7 +48,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.update(delta);
         }
-        badLogic.update(delta);
+        shipMain.update(delta);
     }
 
     private void draw() {
@@ -59,7 +59,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.draw(batch);
         }
-        badLogic.draw(batch);
+        shipMain.draw(batch);
         batch.end();
     }
 
@@ -70,14 +70,13 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.resize(worldBounds);
         }
-        badLogic.resize(worldBounds);
+        shipMain.resize(worldBounds);
     }
 
     @Override
     public void dispose() {
         bg.dispose();
         atlas.dispose();
-        bl.dispose();
         super.dispose();
     }
 
@@ -93,13 +92,13 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        badLogic.touchDown(touch, pointer);
+        shipMain.touchDown(touch, pointer);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        badLogic.touchUp(touch, pointer);
+        shipMain.touchUp(touch, pointer);
         return false;
     }
 }
