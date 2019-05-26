@@ -8,19 +8,24 @@ import ru.geekbrains.math.Rect;
 
 public class SpaceShipS extends Sprite {
 
+    public final int PARTCOUNT = 2;
+    public final int LEFTWIDTH;
+
     public SpaceShipS(TextureRegion region) {
         super(region);
-        this.regions = new TextureRegion[1];
+        this.regions = new TextureRegion[3];
         this.regions[0] = region;
-        regions[0].setRegionWidth(regions[frame].getRegionWidth()/2);
+        System.out.println("region_size= " + regions.length);
+        LEFTWIDTH = regions[0].getRegionWidth()/PARTCOUNT;
+        regions[0].setRegionWidth(LEFTWIDTH);
     }
 
     public void setLeftHalf() {
-        regions[frame].setRegionWidth(regions[frame].getRegionWidth()/2);
+        regions[frame].setRegionWidth(LEFTWIDTH);
     }
 
     public void setRightHalf() {
-        regions[frame].setRegionX(regions[frame].getRegionX() + regions[frame].getRegionWidth()/2);
+        regions[frame].setRegionX(regions[frame].getRegionX() + LEFTWIDTH);
     }
 
     @Override

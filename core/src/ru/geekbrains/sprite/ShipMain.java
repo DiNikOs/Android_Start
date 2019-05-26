@@ -47,6 +47,9 @@ public class ShipMain extends SpaceShipS {
         return false;
     }
 
-
+    @Override
+    public boolean touchUp(Vector2 touch, int pointer) {
+        return false;
+    }
 
 }
