@@ -10,7 +10,7 @@ import ru.geekbrains.math.Rect;
 
 public class ShipMain extends SpaceShipS {
 
-    protected static float LEN = 0.05f;
+    protected static float LEN = 0.03f;
     private Vector2 touch;
     private Vector2 v0;
     private Vector2 v;
@@ -25,12 +25,15 @@ public class ShipMain extends SpaceShipS {
     @Override
     public void update(float delta) {
         super.update(delta);
-        v0.set(touch);
-        if (v0.sub(pos).len() <= LEN) {
-            pos.set(touch);
-        } else {
-            pos.add(v);
-        }
+            v0.set(touch);
+            if (v0.sub(pos).len() <= LEN) {
+                pos.set(touch);
+                setLeftHalf();
+            } else {
+                pos.add(v);
+                setRightHalf();
+            }
+
     }
 
     @Override

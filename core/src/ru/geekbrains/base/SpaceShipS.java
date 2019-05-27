@@ -10,22 +10,28 @@ public class SpaceShipS extends Sprite {
 
     public final int PARTCOUNT = 2;
     public final int LEFTWIDTH;
+    public final int REG_X;
+    protected TextureRegion regionLeft;
+    protected TextureRegion regionRigth;
 
     public SpaceShipS(TextureRegion region) {
         super(region);
-        this.regions = new TextureRegion[3];
+        this.regions = new TextureRegion[4];
         this.regions[0] = region;
-        System.out.println("region_size= " + regions.length);
-        LEFTWIDTH = regions[0].getRegionWidth()/PARTCOUNT;
+        LEFTWIDTH = region.getRegionWidth()/PARTCOUNT;
+        REG_X = region.getRegionX();
+        regions[0].setRegionX(REG_X-LEFTWIDTH);
         regions[0].setRegionWidth(LEFTWIDTH);
     }
 
     public void setLeftHalf() {
-        regions[frame].setRegionWidth(LEFTWIDTH);
+        regions[0].setRegionX(REG_X);
+        regions[0].setRegionWidth(LEFTWIDTH);
     }
 
     public void setRightHalf() {
-        regions[frame].setRegionX(regions[frame].getRegionX() + LEFTWIDTH);
+        regions[0].setRegionWidth(LEFTWIDTH);
+        regions[0].setRegionX(REG_X + LEFTWIDTH);
     }
 
     @Override
