@@ -11,12 +11,10 @@ public class SpaceShipS extends Sprite {
     public final int PARTCOUNT = 2;
     public final int LEFTWIDTH;
     public final int REG_X;
-    protected TextureRegion regionLeft;
-    protected TextureRegion regionRigth;
 
     public SpaceShipS(TextureRegion region) {
         super(region);
-        this.regions = new TextureRegion[4];
+        this.regions = new TextureRegion[1];
         this.regions[0] = region;
         LEFTWIDTH = region.getRegionWidth()/PARTCOUNT;
         REG_X = region.getRegionX();

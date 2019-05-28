@@ -35,7 +35,8 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        bg = new Texture("textures/bg.jpg");
+        System.out.println("MenuScreen_show");
+        bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
         starArray = new Star[STAR_COUNT];
