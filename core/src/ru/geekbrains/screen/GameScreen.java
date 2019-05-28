@@ -53,7 +53,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void draw() {
-        Gdx.gl.glClearColor(0.4f, 0.3f, 0.9f, 1f);
+        Gdx.gl.glClearColor(1f, 1f, 1f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
