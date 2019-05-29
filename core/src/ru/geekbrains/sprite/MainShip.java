@@ -1,6 +1,8 @@
 package ru.geekbrains.sprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -28,6 +30,8 @@ public class MainShip extends Sprite {
 
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
+    private int bulletSpeed;
+    private int bulletCount;
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
@@ -37,6 +41,8 @@ public class MainShip extends Sprite {
         v0 = new Vector2(0.5f, 0);
         bulletV = new Vector2(0, 0.5f);
         bulletPos = new Vector2();
+        bulletSpeed = 8;
+        bulletCount = 0;
     }
 
     @Override
@@ -50,6 +56,12 @@ public class MainShip extends Sprite {
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(v, delta);
+        bulletCount++;
+        if (bulletCount == bulletSpeed) {
+            System.out.println("shoot= " + bulletCount);
+            shoot();
+            bulletCount = 0;
+        }
         if (getRight() > worldBounds.getRight()) {
             setRight(worldBounds.getRight());
             stop();
