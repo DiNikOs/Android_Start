@@ -1,6 +1,8 @@
 package ru.geekbrains.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,6 +16,8 @@ import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 
+import static ru.geekbrains.sprite.MainShip.getSound;
+
 public class GameScreen extends BaseScreen {
 
     private static final int STAR_COUNT = 64;
@@ -21,11 +25,18 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
     private TextureAtlas atlas;
+
+    private Music music;
+
     private Star[] starArray;
 
     private MainShip mainShip;
 
     private BulletPool bulletPool;
+
+    private boolean isPlaying;
+    private boolean isLooping;
+    private float position;
 
     @Override
     public void show() {
@@ -33,12 +44,19 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        isPlaying = music.isPlaying();
+        isLooping = music.isLooping();
+        position = music.getPosition();
         starArray = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
         bulletPool = new BulletPool();
         mainShip = new MainShip(atlas, bulletPool);
+        music.setVolume(3f);
+        music.play();
+        music.setLooping(true);
     }
 
     @Override
@@ -54,6 +72,12 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
+        if (!isPlaying) {
+            music.play();
+        }
+        if (!isLooping) {
+            music.setLooping(true);
+        }
     }
 
     private void freeAllDestroyedActiveObjects() {
@@ -88,6 +112,8 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         bulletPool.dispose();
+        music.dispose();
+        getSound().dispose();
         super.dispose();
     }
 

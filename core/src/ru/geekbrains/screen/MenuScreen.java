@@ -2,6 +2,7 @@ package ru.geekbrains.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -28,6 +29,11 @@ public class MenuScreen extends BaseScreen {
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
 
+    private Music music;
+
+    private boolean isPlaying;
+    private boolean isLooping;
+
     public MenuScreen(Game game) {
         this.game = game;
     }
@@ -39,12 +45,17 @@ public class MenuScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         starArray = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
         buttonExit = new ButtonExit(atlas);
         buttonPlay = new ButtonPlay(atlas, game);
+        isPlaying = music.isPlaying();
+        isLooping = music.isLooping();
+        music.setVolume(3f);
+        music.play();
     }
 
     @Override
@@ -56,6 +67,12 @@ public class MenuScreen extends BaseScreen {
     private void update(float delta) {
         for (Star star : starArray) {
             star.update(delta);
+        }
+        if (!isPlaying) {
+            music.play();
+        }
+        if (!isLooping) {
+            music.setLooping(true);
         }
     }
     private void draw() {
@@ -75,6 +92,7 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        music.dispose();
         super.dispose();
     }
     @Override

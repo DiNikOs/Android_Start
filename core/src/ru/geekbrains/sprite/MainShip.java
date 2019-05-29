@@ -18,6 +18,8 @@ public class MainShip extends Sprite {
     private BulletPool bulletPool;
     private TextureRegion bulletRegion;
 
+    private static Sound sound;
+
     private Vector2 v;
     private final Vector2 v0;
     private Vector2 bulletV;
@@ -37,6 +39,7 @@ public class MainShip extends Sprite {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
+        this.sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
         v = new Vector2();
         v0 = new Vector2(0.5f, 0);
         bulletV = new Vector2(0, 0.5f);
@@ -60,6 +63,7 @@ public class MainShip extends Sprite {
         if (bulletCount == bulletSpeed) {
             System.out.println("shoot= " + bulletCount);
             shoot();
+            sound.play(0.05f);
             bulletCount = 0;
         }
         if (getRight() > worldBounds.getRight()) {
@@ -69,6 +73,10 @@ public class MainShip extends Sprite {
             setLeft(worldBounds.getLeft());
             stop();
         }
+    }
+
+    public static Sound getSound() {
+        return sound;
     }
 
     @Override
