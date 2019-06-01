@@ -9,6 +9,7 @@ public abstract class SpritesPool<T extends Sprite> {
 
     protected final List<T> activeObjects = new ArrayList<T>();
     protected final List<T> freeObjects = new ArrayList<T>();
+    protected float h = 0.0f;
 
     protected abstract T newObject();
 
@@ -28,6 +29,8 @@ public abstract class SpritesPool<T extends Sprite> {
         for (Sprite sprite : activeObjects) {
             if (!sprite.isDestroyed()) {
                 sprite.update(delta);
+               h = sprite.getHeight();
+
             }
         }
     }
@@ -66,4 +69,9 @@ public abstract class SpritesPool<T extends Sprite> {
         }
         System.out.println("active/free : " + activeObjects.size() + "/" + freeObjects.size());
     }
+
+    public float getH() {
+        return h;
+    }
+
 }

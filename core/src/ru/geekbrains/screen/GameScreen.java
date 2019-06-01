@@ -79,8 +79,17 @@ public class GameScreen extends BaseScreen {
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
         explosionPool.updateActiveSprites(delta);
+
         enemyPool.updateActiveSprites(delta);
+        for (int i = 0; i < enemyPool.getActiveObjects().size(); i++) {
+           // System.out.println("enemy.pos.y= " + enemyPool.getActiveObjects().get(i));
+            System.out.println("enemy.pos.Y= " + enemyPool.getActiveObjects().get(i).pos.y);
+            System.out.println("enemy.Height= " + enemyPool.getActiveObjects().get(i).getHeight());
+            System.out.println("-----------------");
+
+        }
         enemyGenerator.generate(delta);
+
     }
 
     private void freeAllDestroyedActiveObjects() {

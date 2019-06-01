@@ -15,6 +15,7 @@ public class Enemy extends Ship {
         this.worldBounds = worldBounds;
         this.v = new Vector2();
         this.v0 = new Vector2();
+        this.vY = new Vector2();
         this.bulletV = new Vector2();
     }
 
@@ -32,7 +33,8 @@ public class Enemy extends Ship {
             int damage,
             float reloadInterval,
             float height,
-            int hp
+            int hp,
+            Vector2 vY
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -45,5 +47,6 @@ public class Enemy extends Ship {
         setHeightProportion(height);
         this.hp = hp;
         this.v.set(v0);
+        this.vY.set(vY);
     }
 }

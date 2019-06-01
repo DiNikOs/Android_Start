@@ -14,6 +14,7 @@ public abstract class Ship extends Sprite {
     protected TextureRegion bulletRegion;
 
     protected Vector2 v;
+    protected Vector2 vY;
     protected Vector2 v0;
     protected Vector2 bulletV;
     protected float bulletHeight;
@@ -38,7 +39,11 @@ public abstract class Ship extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-        pos.mulAdd(v, delta);
+        if (getTop() < worldBounds.getTop()) {
+            pos.mulAdd(v, delta);
+        } else {
+            pos.mulAdd(vY, delta);
+        }
         reloadTimer += delta;
         if (reloadTimer >= reloadInterval) {
             reloadTimer = 0f;
