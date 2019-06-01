@@ -55,6 +55,7 @@ public class MenuScreen extends BaseScreen {
         isPlaying = music.isPlaying();
         isLooping = music.isLooping();
         music.setVolume(3f);
+        music.setLooping(true);
         music.play();
     }
 
