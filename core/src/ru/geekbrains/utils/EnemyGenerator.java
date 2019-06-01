@@ -69,12 +69,6 @@ public class EnemyGenerator {
             generateTimer = 0f;
             Enemy enemy = enemyPool.obtain();
             float type = (float) Math.random();
-            if (enemyBigRegion[0].getRegionHeight() > 337) {
-                System.out.println("Ship out");
-                System.out.println("enemyBigRegionHeight= " +enemyBigRegion[0].getRegionHeight());
-            }
-
-
             if (type < 0.5f) {
                 enemy.set(
                         enemySmallRegion,

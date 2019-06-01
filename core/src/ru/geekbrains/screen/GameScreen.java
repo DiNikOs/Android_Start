@@ -42,6 +42,10 @@ public class GameScreen extends BaseScreen {
 
     private EnemyGenerator enemyGenerator;
 
+    private float posX = 0.0f;
+    private float posY = 0.0f;
+    private float enemyWidth = 0.0f;
+
     @Override
     public void show() {
         super.show();
@@ -79,17 +83,15 @@ public class GameScreen extends BaseScreen {
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
         explosionPool.updateActiveSprites(delta);
-
         enemyPool.updateActiveSprites(delta);
         for (int i = 0; i < enemyPool.getActiveObjects().size(); i++) {
-           // System.out.println("enemy.pos.y= " + enemyPool.getActiveObjects().get(i));
-            System.out.println("enemy.pos.Y= " + enemyPool.getActiveObjects().get(i).pos.y);
-            System.out.println("enemy.Height= " + enemyPool.getActiveObjects().get(i).getHeight());
-            System.out.println("-----------------");
-
+            if (isCollision(i)) {
+                Explosion explosion = explosionPool.obtain();
+                explosion.set(0.15f, enemyPool.getActiveObjects().get(i).pos);
+                enemyPool.getActiveObjects().remove(i);
+            }
         }
         enemyGenerator.generate(delta);
-
     }
 
     private void freeAllDestroyedActiveObjects() {
@@ -150,8 +152,8 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        Explosion explosion = explosionPool.obtain();
-        explosion.set(0.15f, touch);
+//        Explosion explosion = explosionPool.obtain();
+//        explosion.set(0.15f, touch);
         mainShip.touchDown(touch, pointer);
         return false;
     }
@@ -160,5 +162,14 @@ public class GameScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         mainShip.touchUp(touch, pointer);
         return false;
+    }
+
+    public boolean isCollision (int i) {
+        posX = enemyPool.getActiveObjects().get(i).pos.x;
+        posY = enemyPool.getActiveObjects().get(i).pos.y;
+        enemyWidth = enemyPool.getActiveObjects().get(i).getHalfWidth();
+        return (mainShip.pos.y + mainShip.getHalfHeight() >= posY &&
+                mainShip.pos.x - mainShip.getHalfWidth() <= posX + enemyWidth &&
+                mainShip.pos.x + mainShip.getHalfWidth() >= posX - enemyWidth);
     }
 }
