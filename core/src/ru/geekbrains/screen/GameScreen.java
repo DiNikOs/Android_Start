@@ -101,7 +101,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void draw() {
-        Gdx.gl.glClearColor(0.4f, 0.3f, 0.9f, 1f);
+        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
@@ -152,8 +152,6 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-//        Explosion explosion = explosionPool.obtain();
-//        explosion.set(0.15f, touch);
         mainShip.touchDown(touch, pointer);
         return false;
     }
@@ -172,4 +170,5 @@ public class GameScreen extends BaseScreen {
                 mainShip.pos.x - mainShip.getHalfWidth() <= posX + enemyWidth &&
                 mainShip.pos.x + mainShip.getHalfWidth() >= posX - enemyWidth);
     }
+
 }
