@@ -15,6 +15,7 @@ import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.ButtonNewGame;
 import ru.geekbrains.sprite.Explosion;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
@@ -39,6 +40,7 @@ public class GameScreen extends BaseScreen {
     private Sound laserSound;
     private Sound explosionSound;
     private Sound bulletSound;
+    private ButtonNewGame buttonNewGame;
 
     private EnemyGenerator enemyGenerator;
 
@@ -62,6 +64,7 @@ public class GameScreen extends BaseScreen {
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
+        buttonNewGame = new ButtonNewGame(atlas);
         bulletPool = new BulletPool();
         explosionPool = new ExplosionPool(atlas, explosionSound);
         enemyPool = new EnemyPool(bulletPool, bulletSound, worldBounds);
