@@ -8,16 +8,15 @@ import ru.geekbrains.math.Rect;
 
 public class ButtonExit extends ScaledTouchUpButton {
 
-
     public ButtonExit(TextureAtlas atlas) {
         super(atlas.findRegion("btExit"));
         setHeightProportion(0.18f);
     }
 
     @Override
-    public void resize(Rect wordBounds) {
-        setLeft(wordBounds.getLeft() + 0.03f);
-        setBottom(wordBounds.getBottom() + 0.03f);
+    public void resize(Rect worldBounds) {
+        setLeft(worldBounds.getLeft() + 0.03f);
+        setBottom(worldBounds.getBottom() + 0.03f);
     }
 
     @Override
