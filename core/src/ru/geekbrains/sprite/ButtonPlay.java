@@ -1,8 +1,6 @@
 package ru.geekbrains.sprite;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.geekbrains.base.ScaledTouchUpButton;
@@ -27,6 +25,6 @@ public class ButtonPlay extends ScaledTouchUpButton {
 
     @Override
     public void action() {
-        game.setScreen(new GameScreen(game));
+        game.setScreen(new GameScreen());
     }
 }
