@@ -14,6 +14,7 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.ButtonExit;
 import ru.geekbrains.sprite.ButtonPlay;
+import ru.geekbrains.sprite.NameGame;
 import ru.geekbrains.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
@@ -25,9 +26,12 @@ public class MenuScreen extends BaseScreen {
     private Texture bg;
     private Background background;
     private TextureAtlas atlas;
+    private TextureAtlas revision;
     private Star[] starArray;
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
+
+    private NameGame nameGame;
 
     private Music music;
 
@@ -45,6 +49,7 @@ public class MenuScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
+        revision = new TextureAtlas("textures/revision.tpack");
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         starArray = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
@@ -52,6 +57,7 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit = new ButtonExit(atlas);
         buttonPlay = new ButtonPlay(atlas, game);
+        nameGame = new NameGame(revision);
         isPlaying = music.isPlaying();
         isLooping = music.isLooping();
         music.setVolume(3f);
@@ -81,11 +87,13 @@ public class MenuScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
+        nameGame.draw(batch);
         for (Star star : starArray) {
             star.draw(batch);
         }
         buttonExit.draw(batch);
         buttonPlay.draw(batch);
+
         batch.end();
     }
 
@@ -100,6 +108,7 @@ public class MenuScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        nameGame.resize(worldBounds);
         for (Star star : starArray) {
             star.resize(worldBounds);
         }
