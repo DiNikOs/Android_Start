@@ -18,6 +18,7 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.pool.ExplosionPool;
+import ru.geekbrains.pool.RevisionPool;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.ButtonNewGame;
@@ -25,8 +26,10 @@ import ru.geekbrains.sprite.Enemy;
 import ru.geekbrains.sprite.Explosion;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.MessageGameOver;
+import ru.geekbrains.sprite.Revision;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyGenerator;
+import ru.geekbrains.utils.RevisionGenerator;
 
 public class GameScreen extends BaseScreen {
 
@@ -48,6 +51,7 @@ public class GameScreen extends BaseScreen {
     private BulletPool bulletPool;
     private ExplosionPool explosionPool;
     private EnemyPool enemyPool;
+    private RevisionPool revisionPool;
 
     private Music music;
     private Sound laserSound;
@@ -57,6 +61,7 @@ public class GameScreen extends BaseScreen {
     private State state;
 
     private EnemyGenerator enemyGenerator;
+    private RevisionGenerator revisionGenerator;
 
     private MessageGameOver messageGameOver;
     private ButtonNewGame buttonNewGame;
@@ -91,6 +96,8 @@ public class GameScreen extends BaseScreen {
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, worldBounds, mainShip);
         enemyGenerator = new EnemyGenerator(worldBounds, enemyPool, atlas);
+        revisionPool = new RevisionPool(worldBounds,mainShip);
+        revisionGenerator = new RevisionGenerator(worldBounds, revisionPool, revision);
         messageGameOver = new MessageGameOver(atlas);
         buttonNewGame = new ButtonNewGame(atlas, this);
         frags = 0;
@@ -138,6 +145,8 @@ public class GameScreen extends BaseScreen {
             bulletPool.updateActiveSprites(delta);
             enemyPool.updateActiveSprites(delta);
             enemyGenerator.generate(delta, frags);
+            revisionPool.updateActiveSprites(delta);
+            revisionGenerator.generate(delta, frags);
         }
     }
 
@@ -147,6 +156,7 @@ public class GameScreen extends BaseScreen {
         }
         List<Enemy> enemyList = enemyPool.getActiveObjects();
         List<Bullet> bulletList = bulletPool.getActiveObjects();
+        List<Revision> revisionList = revisionPool.getActiveObjects();
         for (Enemy enemy : enemyList) {
             if (enemy.isDestroyed()) {
                 continue;
@@ -241,6 +251,7 @@ public class GameScreen extends BaseScreen {
         enemyPool.dispose();
         laserSound.dispose();
         explosionSound.dispose();
+        revision.dispose();
         music.dispose();
         font.dispose();
         super.dispose();
