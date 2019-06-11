@@ -7,14 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.math.Rnd;
-import ru.geekbrains.pool.BulletPool;
-import ru.geekbrains.pool.RevisionPool;
 
 public class Revision extends Sprite {
 
     protected Rect worldBounds;
-
-   // protected RevisionPool revisionPool;
 
     protected Vector2 v;
     protected Vector2 v0;
@@ -26,16 +22,11 @@ public class Revision extends Sprite {
     protected int hp;
 
     private MainShip mainShip;
- //  private Revision revision;
 
-    public Revision(Rect worldBounds, MainShip mainShip) { // RevisionPool revisionPool,  Revision revision,
+    public Revision(Rect worldBounds, MainShip mainShip) {
 
-//        this.revisionPool = revisionPool;
         this.worldBounds = worldBounds;
         this.mainShip = mainShip;
-//        this.v = new Vector2();
-//        this.v0 = new Vector2();
-//        this.revision = revision;
     }
 
     @Override
@@ -77,7 +68,7 @@ public class Revision extends Sprite {
         this.hp = hp;
     }
 
-    public boolean isBulletCollision(Rect revision) {
+    public boolean isRevisionCollision(Rect revision) {
         return !(
                 revision.getRight() < getLeft()
                         || revision.getLeft() > getRight()

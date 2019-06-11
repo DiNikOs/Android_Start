@@ -45,20 +45,6 @@ public class RevisionGenerator {
     private static final float REVISION_MEDAL_RELOAD_INTERVAL = 3f;
     private static final int REVISION_MEDAL_HP = 1;
 
-    private static final float ENEMY_MEDIUM_HEIGHT = 0.1f;
-    private static final float ENEMY_MEDIUM_BULLET_HEIGHT= 0.02f;
-    private static final float ENEMY_MEDIUM_BULLET_VY = -0.25f;
-    private static final int ENEMY_MEDIUM_BULLET_DAMAGE = 5;
-    private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 4f;
-    private static final int ENEMY_MEDIUM_HP = 5;
-
-    private static final float ENEMY_BIG_HEIGHT = 0.2f;
-    private static final float ENEMY_BIG_BULLET_HEIGHT= 0.04f;
-    private static final float ENEMY_BIG_BULLET_VY = -0.3f;
-    private static final int ENEMY_BIG_BULLET_DAMAGE = 10;
-    private static final float ENEMY_BIG_RELOAD_INTERVAL = 1f;
-    private static final int ENEMY_BIG_HP = 10;
-
     private Rect worldBounds;
 
     private float generateInterval = 4f;
@@ -74,11 +60,9 @@ public class RevisionGenerator {
     private final TextureRegion[] medal;
 
 
-    private final Vector2 revisionV = new Vector2(0f, -0.2f);
-    private final Vector2 enemyMediumV = new Vector2(0f, -0.03f);
-    private final Vector2 enemyBigV = new Vector2(0f, -0.005f);
-
-    private TextureRegion bulletRegion;
+    private final Vector2 revisionV = new Vector2(0f, -0.1f);
+    private final Vector2 revisionV2 = new Vector2(0f, -0.2f);
+    private final Vector2 revisionV3 = new Vector2(0f, -0.3f);
 
     private RevisionPool revisionPool;
 
@@ -188,22 +172,6 @@ public class RevisionGenerator {
                         REVISION_MEDAL_HP
                 );
             }
-
-
-
-//            else {
-//                revision.set(
-//                        enemyBigRegion,
-//                        revisionV,
-//                        bulletRegion,
-//                        ENEMY_BIG_BULLET_HEIGHT,
-//                        ENEMY_BIG_BULLET_VY,
-//                        ENEMY_BIG_BULLET_DAMAGE * level,
-//                        ENEMY_BIG_RELOAD_INTERVAL,
-//                        ENEMY_BIG_HEIGHT,
-//                        ENEMY_BIG_HP
-//                );
-//            }
             revision.pos.x = Rnd.nextFloat(worldBounds.getLeft() + revision.getHalfWidth(), worldBounds.getRight() - revision.getHalfWidth());
             revision.setBottom(worldBounds.getTop());
         }
