@@ -8,7 +8,7 @@ package ru.geekbrains.sprite;
 public class NameGame extends Sprite {
 
     public NameGame(TextureAtlas revision) {
-        super(revision.findRegion("SpaceBattle"));
+        super(revision.findRegion("spaceBattle"));
         setHeightProportion(0.3f);
         setBottom(-0.1f);
     }

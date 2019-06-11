@@ -1,5 +1,6 @@
 package ru.geekbrains.sprite;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -7,10 +8,16 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.math.Rnd;
+import ru.geekbrains.pool.BulletPool;
+import ru.geekbrains.pool.ExplosionPool;
 
-public class Revision extends Sprite {
+public class Revision extends Ship {
 
     protected Rect worldBounds;
+    public enum StateRevision {GIFT, LEVELUP, MAGNETO, REPAIR, SHIELD, SLOW, UPGRADE, MEDAL}
+
+   // private StateRevision stateRevision;
+    private Object owner;
 
     protected Vector2 v;
     protected Vector2 v0;
@@ -24,31 +31,21 @@ public class Revision extends Sprite {
     private MainShip mainShip;
 
     public Revision(Rect worldBounds, MainShip mainShip) {
-
+        this.v = new Vector2();
+        this.v0 = new Vector2();
+        //v0 = new Vector2(0.0f, -0.5f);
         this.worldBounds = worldBounds;
         this.mainShip = mainShip;
     }
 
     @Override
     public void update(float delta) {
-        pos.mulAdd(v, delta);
-        if (getRight() < worldBounds.getLeft()) {
-            setLeft(worldBounds.getRight());
-        }
-        if (getLeft() > worldBounds.getRight()) {
-            setRight(worldBounds.getLeft());
-        }
-        if (getTop() < worldBounds.getBottom()) {
-            setBottom(worldBounds.getTop());
-        }
-    }
 
-    @Override
-    public void resize(Rect wordBounds) {
-        this.worldBounds = wordBounds;
-        float posX = Rnd.nextFloat(wordBounds.getLeft(), wordBounds.getRight());
-        float posY = Rnd.nextFloat(wordBounds.getBottom(), wordBounds.getTop());
-        pos.set(posX, posY);
+        if (getBottom() < worldBounds.getBottom()) {
+            destroy();
+            mainShip.damage(damage);
+        }
+
     }
 
     public void set(
@@ -57,7 +54,8 @@ public class Revision extends Sprite {
             int damage,
             float reloadInterval,
             float height,
-            int hp
+            int hp//,
+           // StateRevision stateRevision
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -66,15 +64,19 @@ public class Revision extends Sprite {
         this.reloadTimer = reloadInterval;
         setHeightProportion(height);
         this.hp = hp;
+       // this.stateRevision = stateRevision;
+
     }
 
     public boolean isRevisionCollision(Rect revision) {
         return !(
                 revision.getRight() < getLeft()
-                        || revision.getLeft() > getRight()
-                        || revision.getBottom() > getTop()
-                        || revision.getTop() < pos.y
+                || revision.getLeft() > getRight()
+                || revision.getBottom() > getTop()
+                || revision.getTop() < pos.y
         );
     }
-
+//    public Object getOwner() {
+//        return owner;
+//    }
 }

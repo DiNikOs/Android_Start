@@ -12,6 +12,9 @@ import ru.geekbrains.sprite.Revision;
 public class RevisionGenerator {
 
     private static final float REVISION_HEIGHT = 0.1f;
+    //private enum StateRevision {GIFT, LEVELUP, MAGNETO, REPAIR, SHIELD, SLOW, UPGRADE, MEDAL}
+
+    private Revision.StateRevision stateRevision;
 
     private static final int REVISION_GIFT_DAMAGE = 1;
     private static final float REVISION_GIFT_RELOAD_INTERVAL = 3f;
@@ -59,7 +62,6 @@ public class RevisionGenerator {
     private final TextureRegion[] upgrade;
     private final TextureRegion[] medal;
 
-
     private final Vector2 revisionV = new Vector2(0f, -0.1f);
     private final Vector2 revisionV2 = new Vector2(0f, -0.2f);
     private final Vector2 revisionV3 = new Vector2(0f, -0.3f);
@@ -71,22 +73,23 @@ public class RevisionGenerator {
     public RevisionGenerator(Rect worldBounds, RevisionPool revisionPool, TextureAtlas revision) {
         this.worldBounds = worldBounds;
         this.revisionPool = revisionPool;
-        TextureRegion textureRegion0 = revision.findRegion("Gift");
-        this.gift =  Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion1 = revision.findRegion("LevelUp");
-        this.levelUp = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion2 = revision.findRegion("Magneto");
-        this.magneto = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion3 = revision.findRegion("repair");
-        this.repair = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion4 = revision.findRegion("Shield");
-        this.shield = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion5 = revision.findRegion("Slow");
-        this.slow = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion6 = revision.findRegion("Upgrade");
-        this.upgrade = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion7 = revision.findRegion("Medal");
-        this.medal = Regions.split(textureRegion0, 1, 2, 2);
+
+        this.gift = new TextureRegion [1];
+        this.gift[0] = revision.findRegion("gift");
+        this.levelUp = new TextureRegion[1];
+        this.levelUp[0] = revision.findRegion("levelUp");
+        this.magneto = new TextureRegion[1];
+        this.magneto[0] =revision.findRegion("magneto");
+        this.repair = new TextureRegion [1];
+        this.repair[0] = revision.findRegion("repair");
+        this.shield = new TextureRegion [1];
+        this.shield[0] = revision.findRegion("shield");
+        this.slow = new TextureRegion [1];
+        this.slow[0] = revision.findRegion("slow");
+        this.upgrade = new TextureRegion [1];
+        this.upgrade[0] = revision.findRegion("upgrade");
+        this.medal = new TextureRegion [1];
+        this.medal[0] = revision.findRegion("medal");
     }
 
     public void generate(float delta, int frags) {
@@ -94,7 +97,6 @@ public class RevisionGenerator {
         generateTimer += delta;
         if (generateTimer >= generateInterval) {
             generateTimer = 0f;
-            //Enemy enemy = enemyPool.obtain();
             Revision revision = revisionPool.obtain();
 
             float type = (float) Math.random();
@@ -105,7 +107,8 @@ public class RevisionGenerator {
                         REVISION_GIFT_DAMAGE,
                         REVISION_GIFT_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_GIFT_HP
+                        REVISION_GIFT_HP//,
+                        //stateRevision.GIFT
                 );
             } else if (type < 0.10f) {
                 revision.set(
@@ -114,9 +117,9 @@ public class RevisionGenerator {
                         REVISION_LEVELUP_DAMAGE,
                         REVISION_LEVELUP_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_LEVELUP_HP
+                        REVISION_LEVELUP_HP//,
+                       // stateRevision.LEVELUP
                 );
-
             } else if (type < 0.15f) {
                 revision.set(
                         magneto,
@@ -124,7 +127,8 @@ public class RevisionGenerator {
                         REVISION_MAGNETO_DAMAGE,
                         REVISION_MAGNETO_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_MAGNETO_HP
+                        REVISION_MAGNETO_HP//,
+                       // stateRevision.MAGNETO
                 );
             } else if (type < 0.20f) {
                 revision.set(
@@ -133,7 +137,8 @@ public class RevisionGenerator {
                         REVISION_REPAIR_DAMAGE,
                         REVISION_REPAIR_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_REPAIR_HP
+                        REVISION_REPAIR_HP//,
+                       // stateRevision.REPAIR
                 );
             } else if (type < 0.25f) {
                 revision.set(
@@ -142,7 +147,8 @@ public class RevisionGenerator {
                         REVISION_SHIELD_DAMAGE,
                         REVISION_SHIELD_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_SHIELD_HP
+                        REVISION_SHIELD_HP//,
+                       // stateRevision.SHIELD
                 );
             } else if (type < 0.30f) {
                 revision.set(
@@ -151,7 +157,8 @@ public class RevisionGenerator {
                         REVISION_SLOW_DAMAGE,
                         REVISION_SLOW_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_SLOW_HP
+                        REVISION_SLOW_HP//,
+                       // stateRevision.SLOW
                 );
             } else if (type < 0.35f) {
                 revision.set(
@@ -160,7 +167,8 @@ public class RevisionGenerator {
                         REVISION_UPGRADE_DAMAGE,
                         REVISION_UPGRADE_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_UPGRADE_HP
+                        REVISION_UPGRADE_HP//,
+                       // stateRevision.UPGRADE
                 );
             }else if (type < 0.40f) {
                 revision.set(
@@ -169,12 +177,17 @@ public class RevisionGenerator {
                         REVISION_MEDAL_DAMAGE,
                         REVISION_MEDAL_RELOAD_INTERVAL,
                         REVISION_HEIGHT,
-                        REVISION_MEDAL_HP
+                        REVISION_MEDAL_HP//,
+                       // stateRevision.MEDAL
                 );
             }
             revision.pos.x = Rnd.nextFloat(worldBounds.getLeft() + revision.getHalfWidth(), worldBounds.getRight() - revision.getHalfWidth());
             revision.setBottom(worldBounds.getTop());
         }
+    }
+
+    public Revision.StateRevision getStateRevision() {
+        return stateRevision;
     }
 
     public int getLevel() {

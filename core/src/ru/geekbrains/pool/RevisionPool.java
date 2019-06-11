@@ -1,5 +1,6 @@
 package ru.geekbrains.pool;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.geekbrains.base.SpritesPool;
@@ -9,7 +10,6 @@ import ru.geekbrains.sprite.Revision;
 
 public class RevisionPool extends SpritesPool <Revision> {
 
-    private Revision revision;
     private MainShip mainShip;
     private Rect worldBounds;
 
@@ -20,6 +20,7 @@ public class RevisionPool extends SpritesPool <Revision> {
 
     @Override
     protected Revision newObject() {
-        return new Revision(revision, mainShip);
+        return new Revision(worldBounds, mainShip);
+        //return new Revision(bulletPool, explosionPool, bulletSound, worldBounds, mainShip);
     }
 }

@@ -43,7 +43,7 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
     private TextureAtlas atlas;
-    private TextureAtlas revision;
+    private TextureAtlas revisionAtlas;
     private Star[] starArray;
 
     private MainShip mainShip;
@@ -86,7 +86,7 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
-        revision = new TextureAtlas("textures/revision.tpack");
+        revisionAtlas = new TextureAtlas("textures/revision.tpack");
         starArray = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
@@ -96,8 +96,8 @@ public class GameScreen extends BaseScreen {
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, worldBounds, mainShip);
         enemyGenerator = new EnemyGenerator(worldBounds, enemyPool, atlas);
-        revisionPool = new RevisionPool(worldBounds,mainShip);
-        revisionGenerator = new RevisionGenerator(worldBounds, revisionPool, revision);
+        revisionPool = new RevisionPool(worldBounds, mainShip);
+        revisionGenerator = new RevisionGenerator(worldBounds, revisionPool, revisionAtlas);
         messageGameOver = new MessageGameOver(atlas);
         buttonNewGame = new ButtonNewGame(atlas, this);
         frags = 0;
@@ -192,12 +192,24 @@ public class GameScreen extends BaseScreen {
                 }
             }
         }
+
+        for (Revision revision : revisionList) {
+            if (revision.isDestroyed()) {
+                continue;
+            }
+            float minDist = revision.getHalfWidth() + mainShip.getHalfWidth();
+            if (revision.pos.dst(mainShip.pos) < minDist) {
+               // revision.destroy();
+                mainShip.damage(mainShip.getHp()*(-1));
+            }
+        }
     }
 
     private void freeAllDestroyedActiveObjects() {
         bulletPool.freeAllDestroyedActiveSprites();
         explosionPool.freeAllDestroyedActiveSprites();
         enemyPool.freeAllDestroyedActiveSprites();
+        revisionPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw() {
@@ -213,6 +225,7 @@ public class GameScreen extends BaseScreen {
             mainShip.draw(batch);
             bulletPool.drawActiveSprites(batch);
             enemyPool.drawActiveSprites(batch);
+            revisionPool.drawActiveSprites(batch);
         } else if (state == State.GAME_OVER) {
             messageGameOver.draw(batch);
             buttonNewGame.draw(batch);
@@ -246,12 +259,13 @@ public class GameScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        revisionAtlas.dispose();
         bulletPool.dispose();
         explosionPool.dispose();
         enemyPool.dispose();
+        revisionPool.dispose();
         laserSound.dispose();
         explosionSound.dispose();
-        revision.dispose();
         music.dispose();
         font.dispose();
         super.dispose();
@@ -302,5 +316,6 @@ public class GameScreen extends BaseScreen {
         bulletPool.freeAllActiveObjects();
         explosionPool.freeAllActiveObjects();
         enemyPool.freeAllActiveObjects();
+        revisionPool.freeAllActiveObjects();
     }
 }

@@ -1,30 +1,29 @@
-
 revision.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: MipMapLinearNearest,Linear
 repeat: none
-SpaceBattle
+spaceBattle
   rotate: false
   xy: 1, 1
   size: 446, 238
   orig: 446, 238
   offset: 0, 0
   index: -1
-Gift
+gift
   rotate: false
   xy: 449, 143
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-LevelUp
+levelUp
   rotate: false
   xy: 449, 45
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-Magneto
+magneto
   rotate: false
   xy: 547, 143
   size: 96, 96
@@ -38,28 +37,28 @@ repair
   orig: 96, 96
   offset: 0, 0
   index: -1
-Shield
+shield
   rotate: false
   xy: 645, 143
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-Slow
+slow
   rotate: false
   xy: 645, 45
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-Upgrade
+upgrade
   rotate: false
   xy: 743, 143
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-Medal
+medal
   rotate: false
   xy: 743, 45
   size: 77, 96
