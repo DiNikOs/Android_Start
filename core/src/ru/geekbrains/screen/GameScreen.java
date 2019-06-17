@@ -18,15 +18,19 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.pool.ExplosionPool;
+import ru.geekbrains.pool.RevisionPool;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.ButtonNewGame;
 import ru.geekbrains.sprite.Enemy;
 import ru.geekbrains.sprite.Explosion;
+import ru.geekbrains.sprite.Gift;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.MessageGameOver;
+import ru.geekbrains.sprite.Revision;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyGenerator;
+import ru.geekbrains.utils.RevisionGenerator;
 
 public class GameScreen extends BaseScreen {
 
@@ -40,14 +44,16 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
     private TextureAtlas atlas;
-    private TextureAtlas revision;
+    private TextureAtlas revisionAtlas;
     private Star[] starArray;
+    private Gift gift;
 
     private MainShip mainShip;
 
     private BulletPool bulletPool;
     private ExplosionPool explosionPool;
     private EnemyPool enemyPool;
+    private RevisionPool revisionPool;
 
     private Music music;
     private Sound laserSound;
@@ -57,6 +63,7 @@ public class GameScreen extends BaseScreen {
     private State state;
 
     private EnemyGenerator enemyGenerator;
+    private RevisionGenerator revisionGenerator;
 
     private MessageGameOver messageGameOver;
     private ButtonNewGame buttonNewGame;
@@ -66,6 +73,7 @@ public class GameScreen extends BaseScreen {
     private StringBuilder sbFrags;
     private StringBuilder sbHP;
     private StringBuilder sbLevel;
+    private int timerDraw;
 
     @Override
     public void show() {
@@ -81,16 +89,19 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
-        revision = new TextureAtlas("textures/revision.tpack");
+        revisionAtlas = new TextureAtlas("textures/revision.tpack");
         starArray = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
             starArray[i] = new Star(atlas);
         }
+        gift = new Gift(revisionAtlas);
         bulletPool = new BulletPool();
         explosionPool = new ExplosionPool(atlas, explosionSound);
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, worldBounds, mainShip);
         enemyGenerator = new EnemyGenerator(worldBounds, enemyPool, atlas);
+        revisionPool = new RevisionPool(worldBounds, mainShip);
+        revisionGenerator = new RevisionGenerator(worldBounds, revisionPool, revisionAtlas);
         messageGameOver = new MessageGameOver(atlas);
         buttonNewGame = new ButtonNewGame(atlas, this);
         frags = 0;
@@ -98,6 +109,7 @@ public class GameScreen extends BaseScreen {
         sbHP = new StringBuilder();
         sbLevel = new StringBuilder();
         state = State.PLAYING;
+        timerDraw = 0;
     }
 
     @Override
@@ -132,12 +144,24 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.update(delta);
         }
+        //timerDraw++;
+
+//        System.out.println("timeDraw= " + timerDraw);
+//        if (timerDraw == 200) {
+//            gift.update(delta);
+//            System.out.println("gift 0");
+//            timerDraw = 0;
+//        }
+
         explosionPool.updateActiveSprites(delta);
         if (state == State.PLAYING) {
             mainShip.update(delta);
+            gift.update(delta);
             bulletPool.updateActiveSprites(delta);
             enemyPool.updateActiveSprites(delta);
             enemyGenerator.generate(delta, frags);
+            revisionPool.updateActiveSprites(delta);
+            revisionGenerator.generate(delta, frags);
         }
     }
 
@@ -147,6 +171,7 @@ public class GameScreen extends BaseScreen {
         }
         List<Enemy> enemyList = enemyPool.getActiveObjects();
         List<Bullet> bulletList = bulletPool.getActiveObjects();
+        List<Revision> revisionList = revisionPool.getActiveObjects();
         for (Enemy enemy : enemyList) {
             if (enemy.isDestroyed()) {
                 continue;
@@ -182,12 +207,24 @@ public class GameScreen extends BaseScreen {
                 }
             }
         }
+
+        for (Revision revision : revisionList) {
+            if (revision.isDestroyed()) {
+                continue;
+            }
+            float minDist = revision.getHalfWidth() + mainShip.getHalfWidth();
+            if (revision.pos.dst(mainShip.pos) < minDist) {
+                revision.destroy();
+                mainShip.damage(mainShip.getHp()*(-1));
+            }
+        }
     }
 
     private void freeAllDestroyedActiveObjects() {
         bulletPool.freeAllDestroyedActiveSprites();
         explosionPool.freeAllDestroyedActiveSprites();
         enemyPool.freeAllDestroyedActiveSprites();
+        revisionPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw() {
@@ -198,11 +235,14 @@ public class GameScreen extends BaseScreen {
         for (Star star : starArray) {
             star.draw(batch);
         }
+
         explosionPool.drawActiveSprites(batch);
+        //revisionPool.drawActiveSprites(batch);
         if (state == State.PLAYING) {
             mainShip.draw(batch);
             bulletPool.drawActiveSprites(batch);
             enemyPool.drawActiveSprites(batch);
+            gift.draw(batch);
         } else if (state == State.GAME_OVER) {
             messageGameOver.draw(batch);
             buttonNewGame.draw(batch);
@@ -228,6 +268,7 @@ public class GameScreen extends BaseScreen {
             star.resize(worldBounds);
         }
         mainShip.resize(worldBounds);
+        gift.resize(worldBounds);
         messageGameOver.resize(worldBounds);
         buttonNewGame.resize(worldBounds);
     }
@@ -236,9 +277,11 @@ public class GameScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        revisionAtlas.dispose();
         bulletPool.dispose();
         explosionPool.dispose();
         enemyPool.dispose();
+        revisionPool.dispose();
         laserSound.dispose();
         explosionSound.dispose();
         music.dispose();
@@ -286,10 +329,12 @@ public class GameScreen extends BaseScreen {
         state = State.PLAYING;
 
         mainShip.startNewGame();
+
         frags = 0;
 
         bulletPool.freeAllActiveObjects();
         explosionPool.freeAllActiveObjects();
         enemyPool.freeAllActiveObjects();
+        revisionPool.freeAllActiveObjects();
     }
 }
